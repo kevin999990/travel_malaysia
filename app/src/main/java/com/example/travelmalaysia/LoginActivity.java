@@ -10,20 +10,15 @@ import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText mEmail;
-    private EditText mPassword;
-    private Button mSubmit;
-    private Button mRegister;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mEmail = findViewById(R.id.register_et_email);
-        mPassword = findViewById(R.id.register_et_password);
-        mSubmit = findViewById(R.id.register_et_submit);
-        mRegister = findViewById(R.id.login_btn_register);
+        EditText mEmail = findViewById(R.id.register_et_email);
+        EditText mPassword = findViewById(R.id.register_et_password);
+        Button mSubmit = findViewById(R.id.register_et_submit);
+        Button mRegister = findViewById(R.id.login_btn_register);
 
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
