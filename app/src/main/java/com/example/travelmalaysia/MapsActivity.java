@@ -13,11 +13,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -63,10 +60,10 @@ public class MapsActivity extends FragmentActivity implements
     private static final String TAG = "MapsActivity";
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
-    private static final float DEFAULT_ZOOM = 16;
-    private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(new LatLng(-40, -168), new LatLng(71, 136));//not sure what use
+    private static final float DEFAULT_ZOOM = 15;
 
-    private final LatLng mDefaultLocation = new LatLng(3.155647, 101.714997);
+    // private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(new LatLng(9.7437, 119.5468), new LatLng(-3.4771, 98.7180));//not sure what use
+    private final LatLng mDefaultLocation = new LatLng(3.867, 109.463);
     //variables
     private Boolean mLocationPermissionsGranted = false;
     private GoogleMap mMap;
@@ -147,9 +144,10 @@ public class MapsActivity extends FragmentActivity implements
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
         }
 
+
         // Add a marker in KLCC and move the camera
         //  mMap.addMarker(new MarkerOptions().position(mDefaultLocation).title("Marker in KLCC Park"));
-        //  mMap.moveCamera(CameraUpdateFactory.newLatLng(mDefaultLocation));
+        moveCamera(mDefaultLocation, 4.6f);
     }
 
     private void init() {
@@ -285,7 +283,6 @@ public class MapsActivity extends FragmentActivity implements
         }
     }
 
-
     private void getLocationPermission() {
         Log.d(TAG, "getLocationPermission: getting location Permission");
         String[] permission = {
@@ -407,51 +404,4 @@ public class MapsActivity extends FragmentActivity implements
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
-
-    /*
-    -------------------- Google PLaces API autocomplete suggestions --------------------
-     */
-    /*
-    private AdapterView.OnItemClickListener mAutoOnItemClickListener = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            hideSoftKeyboard();
-
-            final AutocompletePrediction item = mAutocompleteAdapter.getItem(position);
-            final String placeId = item.getPlaceId();
-
-            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi.getPlaceById(mGoogleApiClient, placeId);
-            placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
-        }
-    };
-    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback = new ResultCallback<PlaceBuffer>() {
-        @Override
-        public void onResult(@NonNull PlaceBuffer places) {
-            if (!places.getStatus().isSuccess()) {
-                Log.d(TAG, "onResult: Place query did not complete successfully " + places.getStatus().toString());
-                places.release();
-            }
-            final Place place = places.get(0);
-
-
-            try {
-                mPlace = new PlaceInfo();
-                mPlace.setAddress(place.getAddress().toString());
-                //mPlace.setAttributions(place.getAttributions().toString());
-                mPlace.setId(place.getId().toString());
-                mPlace.setLatLng(place.getLatLng());
-                mPlace.setName(place.getName().toString());
-                mPlace.setPhoneNumber(place.getPhoneNumber().toString());
-                mPlace.setRating(place.getRating());
-                mPlace.setWebsiteUri(place.getWebsiteUri());
-
-                Log.d(TAG, "onResult: place details: " + mPlace.toString());
-            } catch (NullPointerException e) {
-                Log.e(TAG, "onResult: NullPointerException: " + e.getMessage());
-            }
-            moveCamera(new LatLng(place.getViewport().getCenter().latitude, place.getViewport().getCenter().longitude), DEFAULT_ZOOM, mPlace.getName());
-            places.release();
-
-        }
-    };*/
 }
