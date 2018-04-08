@@ -19,7 +19,7 @@
             android:contentDescription="@string/txt_search_icon"
             android:src="@drawable/ic_search_black" />
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/input_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
