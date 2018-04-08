@@ -136,7 +136,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
         */
     }
-
     private void geoLocate() {
         Log.d(TAG, "geoLocate: geolocating");
         String searchString = mSearchText.getText().toString();
