@@ -1,18 +1,21 @@
 package com.example.travelmalaysia;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
@@ -107,6 +110,33 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_setting:
                 //handle setting action
                 Toast.makeText(getApplicationContext(), "Settings Clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_logout:
+                //todo:: implement logout function
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this); //Home is name of the activity
+                builder.setMessage("Do you want to logout and exit?");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                        Intent i = new Intent();
+                        i.putExtra("finish", true);
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // To clean up all activities
+                        //startActivity(i);
+                        finish();
+                    }
+                });
+
+                builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+                builder.create().show();
+//                Toast.makeText(getApplicationContext(), "Good Bye", Toast.LENGTH_SHORT).show();
+//                finish();
                 break;
         }
 

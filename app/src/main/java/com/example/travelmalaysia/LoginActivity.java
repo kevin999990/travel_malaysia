@@ -31,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
                 //TODO:: implement login function
                 Toast.makeText(LoginActivity.this, "I have no check, just give u login", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
             }
         });
 
