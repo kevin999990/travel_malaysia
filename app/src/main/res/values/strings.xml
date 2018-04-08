@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Travel Malaysia</string>
+    <string name="title_activity_maps">Map</string>
+
+
+    <string name="prompt_place_name">Enter Place Name</string>
+    <string name="txt_search_icon">Search Icon</string>
 </resources>
