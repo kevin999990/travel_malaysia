@@ -72,12 +72,12 @@ public class LoginActivity extends AppCompatActivity {
         String email = mEmail.getText().toString();
         String password = mPassword.getText().toString();
 
+        //create JSONObject to pass to PHP Server for checking
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("email", email);
             jsonObject.put("password", password);
             Log.d(TAG, "login: " + jsonObject);
-
         } catch (JSONException e) {
             e.printStackTrace();
         }

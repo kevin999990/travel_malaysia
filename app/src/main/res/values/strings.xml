@@ -33,6 +33,8 @@
     <string name="submit">Submit</string>
     <string name="txt_email_hint">abc@example.com</string>
 
+    <string name="error_text">This Field is Required</string>
+
     <!--my domain-->
     <string name="my_domain_name">http://kvintech.esy.es/travelmalaysia/</string>
 
