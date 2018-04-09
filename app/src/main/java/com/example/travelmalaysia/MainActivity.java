@@ -1,21 +1,19 @@
 package com.example.travelmalaysia;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
@@ -114,7 +112,9 @@ public class MainActivity extends AppCompatActivity
                         Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                         i.putExtra("finish", true);
                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // To clean up all activities
+
                         startActivity(i);
+                        removeSharedPreference();
                         finish();
                     }
                 });
@@ -130,12 +130,40 @@ public class MainActivity extends AppCompatActivity
 //                finish();
                 break;
             case R.id.nav_exit:
-                break;
+                builder = new AlertDialog.Builder(this);
+                builder.setMessage("Do you want to exit?");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                        Intent i = new Intent();
+                        i.putExtra("finish", true);
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // To clean up all activities
+                        finish();
+                    }
+                });
 
+                builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+                builder.create().show();
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void removeSharedPreference() {
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.loginPreference), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("email");
+        editor.remove("password");
+        editor.commit();
+        Toast.makeText(this, "Remove Cache", Toast.LENGTH_SHORT).show();
     }
 }
