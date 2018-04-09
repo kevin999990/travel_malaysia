@@ -13,8 +13,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -34,7 +37,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -50,33 +52,32 @@ public class MapsActivity extends FragmentActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
-    public static final int LOCATION_PERMISSION_REQUEST_CODE = 99;//code can be any number
-    private static final int PLAY_SERVICE_REQUEST = 7002;
-    private static final int UPDATE_INTERVAL = 5000;
-    private static final int FASTEST_INTERVAL = 3000;
-    private static final int DISPLACEMENT = 10;
-
-    private static final String MALAYSIA_CODE = "MY";
     private static final String TAG = "MapsActivity";
+    //Permission request code
+    //can be any number
+    public static final int LOCATION_PERMISSION_REQUEST_CODE = 99;
+    //Permission Strings
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
-    private static final float DEFAULT_ZOOM = 15;
 
-    // private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(new LatLng(9.7437, 119.5468), new LatLng(-3.4771, 98.7180));//not sure what use
+    private static final String MALAYSIA_CODE = "MY";
+    private static final float DEFAULT_ZOOM = 15;
+    //Default Location point to center of EM and WM
     private final LatLng mDefaultLocation = new LatLng(3.867, 109.463);
+
     //variables
     private Boolean mLocationPermissionsGranted = false;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private GoogleApiClient mGoogleApiClient;
-    private GeoDataClient mGeoDataClient;
+    /*private GeoDataClient mGeoDataClient;*/
     Marker mMarker;
-    private LocationRequest mLocationRequest;
+    /*private LocationRequest mLocationRequest;*/
     private Location mLocation;
     private PlaceAutocompleteFragment placeAutocompleteFragment;
 
     //widget
-    private AutoCompleteTextView mSearchText;
+    /*private AutoCompleteTextView mSearchText;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +108,8 @@ public class MapsActivity extends FragmentActivity implements
         //if true, then initialize the map
         getLocationPermission();
 
-      /* testing for api
-       mSearchText = (AutoCompleteTextView) findViewById(R.id.input_search);
+        //This is for autocomplete search text
+       /*mSearchText = (AutoCompleteTextView) findViewById(R.id.input_search);
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -143,7 +144,6 @@ public class MapsActivity extends FragmentActivity implements
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
         }
-
 
         // Add a marker in KLCC and move the camera
         //  mMap.addMarker(new MarkerOptions().position(mDefaultLocation).title("Marker in KLCC Park"));
@@ -209,7 +209,7 @@ public class MapsActivity extends FragmentActivity implements
         mLocationRequest.setSmallestDisplacement(DISPLACEMENT);
     }*/
 
-    private void geoLocate() {
+/*    private void geoLocate() {
         Log.d(TAG, "geoLocate: geolocating");
         String searchString = mSearchText.getText().toString();
         Geocoder geocoder = new Geocoder(MapsActivity.this);
@@ -229,8 +229,7 @@ public class MapsActivity extends FragmentActivity implements
             moveCamera(latLng, DEFAULT_ZOOM);
 //            Toast.makeText(this,address.toString(),Toast.LENGTH_SHORT).show();
         }
-
-    }
+    }*/
 
     public boolean checkLocationPermission() {
         if (ActivityCompat.checkSelfPermission(this,
@@ -365,9 +364,9 @@ public class MapsActivity extends FragmentActivity implements
         mMap.addMarker(markerOptions);
     }
 
-    private void hideSoftKeyboard() {
+/*    private void hideSoftKeyboard() {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-    }
+    }*/
 
     @Override
     public void onLocationChanged(Location location) {
