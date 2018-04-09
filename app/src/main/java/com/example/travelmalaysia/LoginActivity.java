@@ -53,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                     mPassword.setError(errText);
                     return;
                 } else
+                    Toast.makeText(LoginActivity.this, "Logging In....", Toast.LENGTH_SHORT).show();
                     login();
             }
         });
@@ -88,7 +89,6 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast.makeText(LoginActivity.this, "Logging In....", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "onResponse: " + response);
 
                         try {

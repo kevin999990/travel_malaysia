@@ -16,25 +16,25 @@
             android:icon="@drawable/ic_drawer_menu_map"
             android:title="@string/nav_drawer_map" />
 
-        <item
-            android:id="@+id/nav_quest"
-            android:icon="@drawable/ic_drawer_menu_quest"
-            android:title="@string/nav_drawer_quests" />
+        <!-- <item
+             android:id="@+id/nav_quest"
+             android:icon="@drawable/ic_drawer_menu_quest"
+             android:title="@string/nav_drawer_quests" />-->
 
         <item
             android:id="@+id/nav_reward"
             android:icon="@drawable/ic_drawer_menu_reward"
             android:title="@string/nav_drawer_rewards" />
 
-        <item
-            android:id="@+id/nav_help"
-            android:icon="@drawable/ic_drawer_menu_help"
-            android:title="@string/nav_drawer_help" />
+        <!--    <item
+                android:id="@+id/nav_help"
+                android:icon="@drawable/ic_drawer_menu_help"
+                android:title="@string/nav_drawer_help" />-->
 
-        <item
-            android:id="@+id/nav_setting"
-            android:icon="@drawable/ic_drawer_menu_setting"
-            android:title="@string/nav_drawer_settings" />
+        <!-- <item
+             android:id="@+id/nav_setting"
+             android:icon="@drawable/ic_drawer_menu_setting"
+             android:title="@string/nav_drawer_settings" />-->
     </group>
 
     <group
@@ -44,6 +44,10 @@
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_logoff"
             android:title="@string/nav_drawer_logout" />
+        <item
+            android:id="@+id/nav_exit"
+            android:icon="@drawable/ic_drawer_menu_exit"
+            android:title="@string/nav_drawer_exit" />
     </group>
 
 </menu>

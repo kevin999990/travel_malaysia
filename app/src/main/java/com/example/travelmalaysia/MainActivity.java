@@ -28,15 +28,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -95,22 +86,22 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(getApplicationContext(), "Map Clicked", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), MapsActivity.class));
                 break;
-            case R.id.nav_quest:
+           /* case R.id.nav_quest:
                 //handle quest action
                 Toast.makeText(getApplicationContext(), "Quest Clicked", Toast.LENGTH_SHORT).show();
-                break;
+                break;*/
             case R.id.nav_reward:
                 //handle reward action
                 Toast.makeText(getApplicationContext(), "Reward Clicked", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.nav_help:
+          /*  case R.id.nav_help:
                 //handle help action
                 Toast.makeText(getApplicationContext(), "Help Clicked", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_setting:
                 //handle setting action
                 Toast.makeText(getApplicationContext(), "Settings Clicked", Toast.LENGTH_SHORT).show();
-                break;
+                break;*/
             case R.id.nav_logout:
                 //todo:: implement logout function
 
@@ -120,10 +111,10 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         finish();
-                        Intent i = new Intent();
+                        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                         i.putExtra("finish", true);
                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // To clean up all activities
-                        //startActivity(i);
+                        startActivity(i);
                         finish();
                     }
                 });
@@ -138,6 +129,9 @@ public class MainActivity extends AppCompatActivity
 //                Toast.makeText(getApplicationContext(), "Good Bye", Toast.LENGTH_SHORT).show();
 //                finish();
                 break;
+            case R.id.nav_exit:
+                break;
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
