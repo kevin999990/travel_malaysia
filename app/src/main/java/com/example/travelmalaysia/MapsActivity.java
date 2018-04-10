@@ -20,6 +20,13 @@ import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.travelmalaysia.model.MyPlace;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
@@ -42,9 +49,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback,
@@ -76,6 +88,11 @@ public class MapsActivity extends FragmentActivity implements
     private Location mLocation;
     private PlaceAutocompleteFragment placeAutocompleteFragment;
 
+    //connect to mysql
+    private String url;
+    private RequestQueue requestQueue;
+    private JsonObjectRequest request;
+
     //widget
     /*private AutoCompleteTextView mSearchText;*/
 
@@ -83,6 +100,9 @@ public class MapsActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        url = "http://kvintech.esy.es/travelmalaysia/location_control.php";
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
 
         placeAutocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         placeAutocompleteFragment.setFilter(new AutocompleteFilter.Builder().setCountry(MALAYSIA_CODE).build());
@@ -108,6 +128,7 @@ public class MapsActivity extends FragmentActivity implements
         //if true, then initialize the map
         getLocationPermission();
 
+        getLocationListFromServer();
         //This is for autocomplete search text
        /*mSearchText = (AutoCompleteTextView) findViewById(R.id.input_search);
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -402,5 +423,51 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    private void getLocationListFromServer() {
+        requestQueue = Volley.newRequestQueue(MapsActivity.this);
+
+        JSONObject jsonObject = new JSONObject();
+
+        Response.Listener<JSONObject> jsonObjectListener = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    //Log.d(TAG, "onResponse: " +response);
+                    JSONArray array = response.getJSONArray("allPlace");
+
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONArray array2 = array.getJSONArray(i);
+                        MyPlace myPlace = new MyPlace(
+                                array2.getInt(0),
+                                array2.getString(1),
+                                array2.getString(2),
+                                array2.getDouble(3),
+                                array2.getDouble(4),
+                                array2.getInt(5));
+
+                        MarkerOptions options = new MarkerOptions().position(myPlace.getLatLng());
+                        mMap.addMarker(options).setTitle(myPlace.getName());
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MapsActivity.this, "Something Error at getAllLocation()", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onErrorResponse: " + error.getMessage());
+                Log.e(TAG, "onErrorResponse: " + error);
+                error.printStackTrace();
+            }
+        };
+        request = new JsonObjectRequest(Request.Method.POST, url, jsonObject, jsonObjectListener, errorListener);
+        requestQueue.add(request);
     }
 }

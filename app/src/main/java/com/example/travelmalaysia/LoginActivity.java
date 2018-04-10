@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -51,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         String savedEmail = sharedPreferences.getString("email", "NA");
         String savedPassword = sharedPreferences.getString("password", "NA");
 
+        //check is any previous login
         if (!savedEmail.equalsIgnoreCase("NA")) {
             if (!savedPassword.equalsIgnoreCase("NA")) {
                 Toast.makeText(this, "Logging In to Last User.....", Toast.LENGTH_SHORT).show();
@@ -66,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                 String errText = "This Field Required";
                 String email = mEmail.getText().toString();
                 String password = mPassword.getText().toString();
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
                 if (mEmail.getText().toString().isEmpty()) {
                     mEmail.setError(errText);
