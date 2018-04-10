@@ -2,8 +2,6 @@ package com.example.travelmalaysia;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -13,11 +11,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AutoCompleteTextView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -29,16 +22,10 @@ import com.android.volley.toolbox.Volley;
 import com.example.travelmalaysia.model.MyPlace;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.AutocompleteFilter;
-import com.google.android.gms.location.places.GeoDataClient;
-import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -53,16 +40,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener,
+        GoogleMap.OnMyLocationChangeListener {
 
     private static final String TAG = "MapsActivity";
     //Permission request code
@@ -76,6 +61,9 @@ public class MapsActivity extends FragmentActivity implements
     private static final float DEFAULT_ZOOM = 15;
     //Default Location point to center of EM and WM
     private final LatLng mDefaultLocation = new LatLng(3.867, 109.463);
+
+
+    ArrayList<MyPlace> myPlaceArrayList;
 
     //variables
     private Boolean mLocationPermissionsGranted = false;
@@ -104,6 +92,10 @@ public class MapsActivity extends FragmentActivity implements
         url = "http://kvintech.esy.es/travelmalaysia/location_control.php";
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
+        myPlaceArrayList = new ArrayList<>();
+
+  /*Search Function,,, will be added next time
+
         placeAutocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         placeAutocompleteFragment.setFilter(new AutocompleteFilter.Builder().setCountry(MALAYSIA_CODE).build());
         placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -123,7 +115,7 @@ public class MapsActivity extends FragmentActivity implements
                 Toast.makeText(MapsActivity.this, "" + status.toString(), Toast.LENGTH_SHORT).show();
             }
         });
-
+*/
         //Check is all permission are granted
         //if true, then initialize the map
         getLocationPermission();
@@ -163,7 +155,7 @@ public class MapsActivity extends FragmentActivity implements
 
         if (checkLocationPermission()) {
             mMap.setMyLocationEnabled(true);
-            mMap.getUiSettings().setMyLocationButtonEnabled(false);
+            //mMap.getUiSettings().setMyLocationButtonEnabled(false);
         }
 
         // Add a marker in KLCC and move the camera
@@ -200,57 +192,7 @@ public class MapsActivity extends FragmentActivity implements
             mMap.addMarker(new MarkerOptions().position(latLng));
             moveCamera(latLng, DEFAULT_ZOOM);
         }
-        /*
-        mGeoDataClient = Places.getGeoDataClient(this);
-        mSearchText.setOnItemClickListener(mAutoOnItemClickListener);
-        mAutocompleteAdapter = new PlaceAutocompleteAdapter(this, mGeoDataClient, LAT_LNG_BOUNDS, null);
-
-        mSearchText.setAdapter(mAutocompleteAdapter);
-        mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH
-                        || actionId == EditorInfo.IME_ACTION_DONE
-                        || event.getAction() == KeyEvent.ACTION_DOWN
-                        || event.getAction() == KeyEvent.KEYCODE_ENTER) {
-                    hideSoftKeyboard();
-                    geoLocate();
-                }
-                return false;
-            }
-        });
-        */
     }
-
-/*    private void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(UPDATE_INTERVAL);
-        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setSmallestDisplacement(DISPLACEMENT);
-    }*/
-
-/*    private void geoLocate() {
-        Log.d(TAG, "geoLocate: geolocating");
-        String searchString = mSearchText.getText().toString();
-        Geocoder geocoder = new Geocoder(MapsActivity.this);
-        List<Address> addressList = new ArrayList<>();
-        try {
-            addressList = geocoder.getFromLocationName(searchString, 1);
-        } catch (IOException e) {
-            Log.e(TAG, "geoLocate: IOException: " + e.getMessage());
-        }
-
-        if (addressList.size() > 0) {
-            Address address = addressList.get(0);
-            Log.d(TAG, "address: " + address.toString());
-            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-
-            mMap.addMarker(new MarkerOptions().position(latLng));
-            moveCamera(latLng, DEFAULT_ZOOM);
-//            Toast.makeText(this,address.toString(),Toast.LENGTH_SHORT).show();
-        }
-    }*/
 
     public boolean checkLocationPermission() {
         if (ActivityCompat.checkSelfPermission(this,
@@ -447,6 +389,8 @@ public class MapsActivity extends FragmentActivity implements
                                 array2.getDouble(4),
                                 array2.getInt(5));
 
+                        myPlaceArrayList.add(myPlace);
+
                         MarkerOptions options = new MarkerOptions().position(myPlace.getLatLng());
                         mMap.addMarker(options).setTitle(myPlace.getName());
                     }
@@ -454,8 +398,6 @@ public class MapsActivity extends FragmentActivity implements
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
             }
         };
         Response.ErrorListener errorListener = new Response.ErrorListener() {
@@ -469,5 +411,20 @@ public class MapsActivity extends FragmentActivity implements
         };
         request = new JsonObjectRequest(Request.Method.POST, url, jsonObject, jsonObjectListener, errorListener);
         requestQueue.add(request);
+    }
+
+    @Override
+    public void onMyLocationChange(Location location) {
+        Location target = new Location("Target");
+        for (int i = 0; i < myPlaceArrayList.size(); i++) {
+
+            target.setLatitude(myPlaceArrayList.get(i).getLat());
+            target.setLongitude(myPlaceArrayList.get(i).getLng());
+            Log.d(TAG, "onMyLocationChange: " + myPlaceArrayList.get(i).getName() + "  " + location.distanceTo(target));
+            if (location.distanceTo(target) < 100) {
+                Log.d(TAG, "onMyLocationChange: " + myPlaceArrayList.get(i).getName() + "  " + location.distanceTo(target));
+                Toast.makeText(this, "Your are near target " + myPlaceArrayList.get(i).getName(), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
