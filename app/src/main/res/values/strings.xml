@@ -42,5 +42,6 @@
     <!--URL-->
     <string name="my_domain_name">http://kvintech.esy.es/travelmalaysia/</string>
     <string name="url_login_control">http://kvintech.esy.es/travelmalaysia/login_control.php</string>
+    <string name="url_register_control">http://kvintech.esy.es/travelmalaysia/register_control.php</string>
 
 </resources>

@@ -4,8 +4,8 @@
     android:layout_height="match_parent">
 
     <include
-        android:id="@+id/progress_layout"
-        layout="@layout/progress_bar_layout"
+        android:id="@+id/login_progress_layout"
+        layout="@layout/login_progress_bar_layout"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

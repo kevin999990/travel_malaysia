@@ -52,13 +52,23 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    public final static boolean isValidEmail(CharSequence target) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+    }
+
+    //show progress bar is login is in progress
+    private void showProgress(final boolean show) {
+        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+        mLoginView.setVisibility(show ? View.GONE : View.VISIBLE);
+    }
+
     private void login(final String email, final String password) {
         showProgress(true);
 
         requestQueue = Volley.newRequestQueue(LoginActivity.this);
 
         //create JSONObject to pass to PHP Server for checking
-        final JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("email", email);
             jsonObject.put("password", password);
@@ -93,7 +103,8 @@ public class LoginActivity extends AppCompatActivity {
                                 finish();
                             } else {
                                 showProgress(false);
-                                Toast.makeText(LoginActivity.this, "Wrong Email or Password", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "Wrong Email or Password", Toast.LENGTH_LONG).show();
+                                mPassword.setText("");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -103,19 +114,13 @@ public class LoginActivity extends AppCompatActivity {
                 , new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(LoginActivity.this, "Something Error at Login()", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Something Error at Login()", Toast.LENGTH_LONG).show();
                 Log.e(TAG, "onErrorResponse: " + error.getMessage());
                 Log.e(TAG, "onErrorResponse: " + error);
                 error.printStackTrace();
             }
         });
         requestQueue.add(request);
-    }
-
-    //show progress bar is login is in progress
-    private void showProgress(final boolean show) {
-        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-        mLoginView.setVisibility(show ? View.GONE : View.VISIBLE);
     }
 
     private void initializeVariable() {
@@ -126,7 +131,7 @@ public class LoginActivity extends AppCompatActivity {
         mSubmit = findViewById(R.id.register_et_submit);
         mRegister = findViewById(R.id.login_btn_register);
 
-        mProgressView = findViewById(R.id.progress_layout);
+        mProgressView = findViewById(R.id.login_progress_layout);
         mLoginView = findViewById(R.id.login_form);
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -137,37 +142,6 @@ public class LoginActivity extends AppCompatActivity {
         savedPassword = sharedPreferences.getString("password", "NA");
 
         setButtonListener();
-    }
-
-    private void setButtonListener() {
-        mSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideSoftKeyboard();
-
-                String errText = "This Field Required";
-                String email = mEmail.getText().toString();
-                String password = mPassword.getText().toString();
-
-                //check if any field is empty
-                if (mEmail.getText().toString().isEmpty()) {
-                    mEmail.setError(errText);
-                    return;
-                } else if (mPassword.getText().toString().isEmpty()) {
-                    mPassword.setError(errText);
-                    return;
-                } else
-                    login(email, password);
-            }
-        });
-
-        mRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
-                finish();
-            }
-        });
     }
 
     private boolean checkPreviousLogin() {
@@ -184,5 +158,43 @@ public class LoginActivity extends AppCompatActivity {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(),
                 InputMethodManager.RESULT_UNCHANGED_SHOWN);
+    }
+
+    private void setButtonListener() {
+        mSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideSoftKeyboard();
+
+                String errText = "This Field Required";
+                String errEmail = "Email Not Valid";
+                String email = mEmail.getText().toString();
+                String password = mPassword.getText().toString();
+
+                //check if any field is empty
+                if (mEmail.getText().toString().isEmpty()) {
+                    mEmail.requestFocus();
+                    mEmail.setError(errText);
+                    return;
+                } else if (!isValidEmail(mEmail.getText().toString())) {
+                    mEmail.requestFocus();
+                    mEmail.setError(errEmail);
+                    return;
+                } else if (mPassword.getText().toString().isEmpty()) {
+                    mPassword.requestFocus();
+                    mPassword.setError(errText);
+                    return;
+                } else
+                    login(email, password);
+            }
+        });
+
+        mRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
+                finish();
+            }
+        });
     }
 }
