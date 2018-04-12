@@ -1,6 +1,8 @@
 package com.example.travelmalaysia.model;
 
-public class MyUser {
+import java.io.Serializable;
+
+public class MyUser implements Serializable {
     private int id;
     private String name;
     private String email;

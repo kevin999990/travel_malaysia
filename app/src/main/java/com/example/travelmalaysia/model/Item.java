@@ -10,9 +10,9 @@ public class Item implements Serializable {
     private int id;
     private String itemname;
     private String description;
-    private double price;
+    private int price;
 
-    public Item(int id, String itemname, String description, double price) {
+    public Item(int id, String itemname, String description, int price) {
         this.id = id;
         this.itemname = itemname;
         this.description = description;
@@ -50,11 +50,11 @@ public class Item implements Serializable {
         this.description = description;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

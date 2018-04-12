@@ -33,8 +33,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -73,7 +71,7 @@ public class MapsActivity extends FragmentActivity implements
     /*private GeoDataClient mGeoDataClient;*/
     Marker mMarker;
     /*private LocationRequest mLocationRequest;*/
-    private Location mLocation;
+    private Location mCurrentLocation;
     private PlaceAutocompleteFragment placeAutocompleteFragment;
 
     //connect to mysql
@@ -94,50 +92,11 @@ public class MapsActivity extends FragmentActivity implements
 
         myPlaceArrayList = new ArrayList<>();
 
-  /*Search Function,,, will be added next time
-
-        placeAutocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-        placeAutocompleteFragment.setFilter(new AutocompleteFilter.Builder().setCountry(MALAYSIA_CODE).build());
-        placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-                final LatLng latLngLoc = place.getLatLng();
-
-                if (mMarker != null) {
-                    mMarker.remove();
-                }
-                mMarker = mMap.addMarker(new MarkerOptions().position(latLngLoc).title(place.getName().toString()));
-                moveCamera(latLngLoc, DEFAULT_ZOOM);
-            }
-
-            @Override
-            public void onError(Status status) {
-                Toast.makeText(MapsActivity.this, "" + status.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
-*/
         //Check is all permission are granted
         //if true, then initialize the map
         getLocationPermission();
 
         getLocationListFromServer();
-        //This is for autocomplete search text
-       /*mSearchText = (AutoCompleteTextView) findViewById(R.id.input_search);
-        mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH
-                        || actionId == EditorInfo.IME_ACTION_DONE
-                        || event.getAction() == KeyEvent.ACTION_DOWN
-                        || event.getAction() == KeyEvent.KEYCODE_ENTER) {
-
-                    hideSoftKeyboard();
-                    //method for searching
-                    geoLocate();
-                }
-                return false;
-            }
-        });*/
     }
 
     /**
@@ -183,10 +142,10 @@ public class MapsActivity extends FragmentActivity implements
         }
 
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        mLocation = mFusedLocationProviderClient.getLastLocation().getResult();
-        if (mLocation != null) {
-            final double latitude = mLocation.getLatitude();
-            final double longitude = mLocation.getLongitude();
+        mCurrentLocation = mFusedLocationProviderClient.getLastLocation().getResult();
+        if (mCurrentLocation != null) {
+            final double latitude = mCurrentLocation.getLatitude();
+            final double longitude = mCurrentLocation.getLongitude();
             LatLng latLng = new LatLng(latitude, longitude);
             //show marker
             mMap.addMarker(new MarkerOptions().position(latLng));
@@ -218,32 +177,6 @@ public class MapsActivity extends FragmentActivity implements
         }
     }
 
-    private void getDeviceLocation() {
-        Log.d(TAG, "getDeviceLocation: gettting device's location");
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        try {
-            if (mLocationPermissionsGranted) {
-                final Task location = mFusedLocationProviderClient.getLastLocation();
-                location.addOnCompleteListener(new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "onComplete: found location");
-                            Location currentLocation = (Location) task.getResult();
-
-                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM);
-                        } else {
-                            Log.d(TAG, "onComplete: current location is null");
-                            Toast.makeText(MapsActivity.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
-
-        } catch (SecurityException e) {
-            Log.e(TAG, "getDeviceLocation: Security Exception: " + e.getMessage());
-        }
-    }
 
     private void getLocationPermission() {
         Log.d(TAG, "getLocationPermission: getting location Permission");
@@ -333,7 +266,7 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onLocationChanged(Location location) {
-        mLocation = location;
+        mCurrentLocation = location;
         init();
     }
 

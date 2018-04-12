@@ -18,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.travelmalaysia.model.Item;
+import com.example.travelmalaysia.model.MyUser;
 import com.example.travelmalaysia.model.User;
 
 import org.json.JSONException;
@@ -32,10 +33,10 @@ public class PopupWindow extends Activity {
     TextView nameview, descriptionview, priceview, quantityview;
     ImageView imgview;
     Button quitbt, addbt, minusbt, redeembt;
-    User user;
+    MyUser user;
     Item item;
     RequestQueue requestQueue;
-    private double price;
+    private int price;
     private int quantities = 1;
     private String JSON_STRING;
     private JSONObject redeemjson;
@@ -50,7 +51,7 @@ public class PopupWindow extends Activity {
         int height = dm.heightPixels;
         getWindow().setLayout((int) (width * .8), (int) (height * .6));
 
-        user = (User) getIntent().getSerializableExtra("user");
+        user = (MyUser) getIntent().getSerializableExtra("user");
         item = (Item) getIntent().getSerializableExtra("item");
         JSON_STRING = getIntent().getStringExtra("JSON");
 
@@ -62,7 +63,7 @@ public class PopupWindow extends Activity {
         descriptionview.setText(item.getDescription());
         priceview = findViewById(R.id.showprice);
         price = item.getPrice() * quantities;
-        priceview.setText(new Double(item.getPrice()).toString());
+        priceview.setText(String.valueOf(item.getPrice()));
         quantityview = findViewById(R.id.quantity);
         quantityview.setText(new Integer(quantities).toString());
         quitbt = findViewById(R.id.quit);
@@ -82,13 +83,13 @@ public class PopupWindow extends Activity {
                 if (quantities < 9 && quantities > 0) {
                     quantities++;
                     price = quantities * item.getPrice();
-                    priceview.setText(new Double(price).toString());
-                    quantityview.setText(new Integer(quantities).toString());
+                    priceview.setText(String.valueOf(price));
+                    quantityview.setText(String.valueOf(quantities));
                 } else {
                     quantities = 1;
                     price = quantities * item.getPrice();
-                    priceview.setText(new Double(price).toString());
-                    quantityview.setText(new Integer(quantities).toString());
+                    priceview.setText(String.valueOf(price));
+                    quantityview.setText(String.valueOf(quantities));
                 }
             }
         });
@@ -98,13 +99,13 @@ public class PopupWindow extends Activity {
                 if (quantities > 1 && quantities < 10) {
                     quantities--;
                     price = quantities * item.getPrice();
-                    priceview.setText(new Double(price).toString());
-                    quantityview.setText(new Integer(quantities).toString());
+                    priceview.setText(String.valueOf(price));
+                    quantityview.setText(String.valueOf(quantities));
                 } else {
                     quantities = 9;
                     price = quantities * item.getPrice();
-                    priceview.setText(new Double(price).toString());
-                    quantityview.setText(new Integer(quantities).toString());
+                    priceview.setText(String.valueOf(price));
+                    quantityview.setText(String.valueOf(quantities));
                 }
 
             }
@@ -113,13 +114,13 @@ public class PopupWindow extends Activity {
         redeembt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (price <= user.getWallet()) {
-                    user.setWallet((user.getWallet() - price));
+                if (price <= user.getPoints()) {
+                    user.setPoints((user.getPoints() - price));
 
 
                     JSONObject jsonObject = new JSONObject();
                     try {
-                        jsonObject.put("userid", new Integer(user.getUserid()).toString());
+                        jsonObject.put("userid", new Integer(user.getId()).toString());
                         jsonObject.put("itemid", new Integer(item.getId()).toString());
                         jsonObject.put("quantity", new Integer(quantities).toString());
                         Log.d(TAG, "insertcode:" + jsonObject);

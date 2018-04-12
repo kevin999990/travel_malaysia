@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.travelmalaysia.PopupWindow;
 import com.example.travelmalaysia.R;
 import com.example.travelmalaysia.model.Item;
+import com.example.travelmalaysia.model.MyUser;
 import com.example.travelmalaysia.model.User;
 
 import java.util.List;
@@ -23,13 +24,14 @@ public class itemAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<Item> mitemList;
-    private User user;
+    //    private User user;
+    private MyUser user;
     private String JSONDATA;
 
-    public itemAdapter(Context mContext, List<Item> mitemList, User user, String JSONDATA) {
+    public itemAdapter(Context mContext, List<Item> mitemList, MyUser user, String JSONDATA) {
         this.mContext = mContext;
         this.mitemList = mitemList;
-        this.user = new User(user);
+        this.user = new MyUser(user);
         this.JSONDATA = JSONDATA;
     }
 

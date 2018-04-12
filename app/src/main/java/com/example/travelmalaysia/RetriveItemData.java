@@ -59,7 +59,6 @@ public class RetriveItemData extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             return stringBuilder.toString().trim();
         }
 
@@ -68,7 +67,6 @@ public class RetriveItemData extends AppCompatActivity {
             Intent activity = new Intent(RetriveItemData.this, DisplayShop.class);
             activity.putExtra("JSON_STRING", result);
             startActivity(activity);
-
         }
 
         @Override
@@ -76,10 +74,7 @@ public class RetriveItemData extends AppCompatActivity {
             super.onProgressUpdate(values);
         }
 
-
     }
-
-
 }
 
 

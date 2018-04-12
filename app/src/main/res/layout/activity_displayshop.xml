@@ -1,45 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="20dp"
-            android:gravity="center"
-            android:text="Shop"
-            android:textSize="40sp" />
-
-        <TextView
-            android:id="@+id/usermoney"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="20dp"
-            android:gravity="center"
-            android:textSize="40sp" />
-    </RelativeLayout>
-    <!-- 定义一个用于显示头像的ImageView -->
-    <ListView
-        android:id="@+id/list_test"
+    <include
+        android:id="@+id/shop_progress_layout"
+        layout="@layout/shop_progress_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clickable="true"
-        android:contextClickable="true">
+        android:layout_weight="1"
+        android:visibility="gone" />
 
-    </ListView>
+    <LinearLayout
+        android:id="@+id/shop_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:id="@+id/shop_rel_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center"
+                    android:text="Shop"
+                    android:textSize="40sp" />
+
+                <TextView
+                    android:id="@+id/usermoney"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center"
+                    android:textSize="40sp" />
+            </RelativeLayout>
+            <!-- 定义一个用于显示头像的ImageView -->
+
+
+            <ListView
+                android:id="@+id/list_test"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:contextClickable="true"
+                android:scrollbars="vertical"></ListView>
+
+
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

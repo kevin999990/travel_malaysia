@@ -123,11 +123,11 @@ public class MainActivity extends AppCompatActivity
         switch (id) {
             case R.id.nav_profile:
                 //handle profile action
-                Toast.makeText(getApplicationContext(), "Profile Clicked", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Profile Clicked", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_map:
                 //handle map action
-                Toast.makeText(getApplicationContext(), "Map Clicked", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Map Clicked", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), MapsActivity.class));
                 break;
            /* case R.id.nav_quest:
@@ -137,7 +137,10 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_reward:
                 //handle reward action
                 //Toast.makeText(getApplicationContext(), "Reward Clicked", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), RetriveItemData.class));
+                //startActivity(new Intent(getApplicationContext(), RetriveItemData.class));
+                Intent i = new Intent(getApplicationContext(), DisplayShop.class);
+                i.putExtra("user", mUser);
+                startActivity(i);
                 break;
           /*  case R.id.nav_help:
                 //handle help action
