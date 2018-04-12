@@ -1,8 +1,7 @@
 package com.example.travelmalaysia;
 
-import android.accounts.Account;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -14,15 +13,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.travelmalaysia.model.MyUser;
 import com.example.travelmalaysia.model.RedeemCode;
-import com.example.travelmalaysia.model.User;
 import com.example.travelmalaysia.model.redeemAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,17 +34,17 @@ public class CouponRedeem extends AppCompatActivity {
     private JSONArray jsonArray;
     private String code, itemname;
     private ListView redeemlistview;
-    private User user;
+    private MyUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coupon_redeem);
         RequestQueue requestQueue = Volley.newRequestQueue(CouponRedeem.this);
-        user = (User) getIntent().getSerializableExtra("user");
+        user = (MyUser) getIntent().getSerializableExtra("user");
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("userid", new Integer(user.getUserid()).toString());
+            jsonObject.put("userid", new Integer(user.getId()).toString());
             Log.d(TAG, "getcode:" + jsonObject);
         } catch (JSONException e) {
             e.printStackTrace();

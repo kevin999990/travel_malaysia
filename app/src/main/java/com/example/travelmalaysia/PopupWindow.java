@@ -19,7 +19,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.travelmalaysia.model.Item;
 import com.example.travelmalaysia.model.MyUser;
-import com.example.travelmalaysia.model.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;

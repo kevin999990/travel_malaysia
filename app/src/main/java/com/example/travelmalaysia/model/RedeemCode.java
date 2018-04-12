@@ -1,8 +1,5 @@
 package com.example.travelmalaysia.model;
 
-/**
- * Created by User on 8/4/2018.
- */
 
 public class RedeemCode {
     private String itemname;

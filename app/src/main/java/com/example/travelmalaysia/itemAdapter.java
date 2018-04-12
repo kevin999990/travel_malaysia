@@ -8,11 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.travelmalaysia.PopupWindow;
-import com.example.travelmalaysia.R;
 import com.example.travelmalaysia.model.Item;
 import com.example.travelmalaysia.model.MyUser;
-import com.example.travelmalaysia.model.User;
 
 import java.util.List;
 
