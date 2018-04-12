@@ -90,7 +90,8 @@ public class MainActivity extends AppCompatActivity
                 break;*/
             case R.id.nav_reward:
                 //handle reward action
-                Toast.makeText(getApplicationContext(), "Reward Clicked", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Reward Clicked", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), RetriveItemData.class));
                 break;
           /*  case R.id.nav_help:
                 //handle help action

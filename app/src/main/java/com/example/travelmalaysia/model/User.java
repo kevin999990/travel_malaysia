@@ -1,88 +1,45 @@
 package com.example.travelmalaysia.model;
 
-public class User {
-    private int id;
-    private String name;
-    private String email;
-    private String password;
-    private double points;
+import java.io.Serializable;
 
-    public User() {
+public class User implements Serializable {
+    private int userid;
+    private String username;
+    private double wallet;
+
+    public User(int userid, String username, double wallet) {
+        this.userid = userid;
+        this.username = username;
+        this.wallet = wallet;
     }
 
-    public User(int id, String name, String email, String password, double points) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.points = points;
+    public User(User user) {
+        this.userid = user.userid;
+        this.username = user.username;
+        this.wallet = user.wallet;
     }
 
-    public User(String name, String email, String password, double points) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.points = points;
+    public int getUserid() {
+        return userid;
     }
 
-    public int getId() {
-        return id;
+    public void setUserid(int userid) {
+        this.userid = userid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getUsername() {
+        return username;
     }
 
-    public String getName() {
-        return name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public double getWallet() {
+        return wallet;
     }
 
-    public String getEmail() {
-        return email;
+    public void setWallet(double wallet) {
+        this.wallet = wallet;
     }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public double getPoints() {
-        return points;
-    }
-
-    public void setPoints(double points) {
-        this.points = points;
-    }
-
-    public String toStringWithId() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", points=" + points +
-                '}';
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", points=" + points +
-                '}';
-    }
-
 }

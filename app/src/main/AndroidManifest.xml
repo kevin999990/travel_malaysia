@@ -58,6 +58,10 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+        <activity android:name=".RetriveItemData"></activity>
+        <activity android:name=".DisplayShop"></activity>
+        <activity android:name=".CouponRedeem"></activity>
+        <activity android:name=".PopupWindow"></activity>
     </application>
 
 </manifest>
