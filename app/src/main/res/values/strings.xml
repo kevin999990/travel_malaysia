@@ -39,7 +39,8 @@
 
     <string name="error_text">This Field is Required</string>
 
-    <!--my domain-->
+    <!--URL-->
     <string name="my_domain_name">http://kvintech.esy.es/travelmalaysia/</string>
+    <string name="url_login_control">http://kvintech.esy.es/travelmalaysia/login_control.php</string>
 
 </resources>
