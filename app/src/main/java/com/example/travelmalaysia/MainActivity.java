@@ -12,28 +12,74 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.travelmalaysia.model.MyUser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private static final String TAG = "MainActivity";
+    private Toolbar toolbar;
+    private DrawerLayout drawer;
+    private NavigationView navigationView;
+    private MyUser mUser;
+    private RequestQueue requestQueue;
+    private JsonObjectRequest request;
+    private SharedPreferences sharedPreferences;
+    private String url;
+
+    //widget
+    private TextView tvId;
+    private TextView tvName;
+    private TextView tvEmail;
+    private TextView tvPoints;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        initializeVariable();
+        getMyUser();
+    }
+
+    private void initializeVariable() {
+        url = getString(R.string.url_profile_control);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        tvName = findViewById(R.id.profile_tv_name);
+        tvEmail = findViewById(R.id.profile_tv_email);
+        tvPoints = findViewById(R.id.profile_tv_points);
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_profile);
+
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        sharedPreferences = getSharedPreferences(getString(R.string.loginPreference), Context.MODE_PRIVATE);
+
     }
 
     @Override
@@ -49,7 +95,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        //getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -58,13 +104,13 @@ public class MainActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
         return super.onOptionsItemSelected(item);
     }
 
@@ -166,5 +212,60 @@ public class MainActivity extends AppCompatActivity
         editor.remove("password");
         editor.commit();
         Toast.makeText(this, "Remove Cache", Toast.LENGTH_SHORT).show();
+    }
+
+
+    private void getMyUser() {
+        int myId = sharedPreferences.getInt("id", 0);
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("id", myId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        request = new JsonObjectRequest(
+                Request.Method.POST,
+                url, jsonObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getString("result").equalsIgnoreCase("success")) {
+
+                                JSONObject jsonUser = response.getJSONObject("user");
+
+                                int id = jsonUser.getInt("userId");
+                                String name = jsonUser.getString("userName");
+                                String email = jsonUser.getString("userEmail");
+                                String password = jsonUser.getString("userPassword");
+                                int points = jsonUser.getInt("userPoints");
+
+                                mUser = new MyUser(id, name, email, password, points);
+
+                                tvName.setText(mUser.getName());
+                                tvEmail.setText(mUser.getEmail());
+                                tvPoints.setText(String.valueOf(mUser.getPoints()));
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Error: " + response.getString("message"), Toast.LENGTH_LONG).show();
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Something Error at Login()", Toast.LENGTH_LONG).show();
+                Log.e(TAG, "onErrorResponse: " + error.getMessage());
+                Log.e(TAG, "onErrorResponse: " + error);
+                error.printStackTrace();
+            }
+        }
+        );
+        requestQueue.add(request);
     }
 }
