@@ -15,6 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity
     private TextView tvName;
     private TextView tvEmail;
     private TextView tvPoints;
-
+    private Button mRedeemBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,16 @@ public class MainActivity extends AppCompatActivity
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         sharedPreferences = getSharedPreferences(getString(R.string.loginPreference), Context.MODE_PRIVATE);
+
+        mRedeemBtn = findViewById(R.id.profile_btn_item_history);
+        mRedeemBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), RedeemHistoryActivity.class);
+                i.putExtra("user", mUser);
+                startActivity(i);
+            }
+        });
 
     }
 

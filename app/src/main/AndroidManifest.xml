@@ -41,9 +41,7 @@
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden">
-
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".RegisterActivity"
             android:label="@string/title_activity_register"
@@ -55,13 +53,16 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
+
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".RetriveItemData"></activity>
-        <activity android:name=".DisplayShop"></activity>
-        <activity android:name=".CouponRedeem"></activity>
-        <activity android:name=".PopupWindow"></activity>
+        <activity android:name=".RetriveItemData" />
+        <activity android:name=".DisplayShop" />
+        <activity android:name=".CouponRedeem" />
+        <activity android:name=".PopupWindow" />
+        <activity android:name=".LocationHistoryActivity" />
+        <activity android:name=".RedeemHistoryActivity"></activity>
     </application>
 
 </manifest>
