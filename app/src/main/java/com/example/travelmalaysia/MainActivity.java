@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity
     private TextView tvEmail;
     private TextView tvPoints;
     private Button mRedeemBtn;
+    private Button mLocationBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +88,16 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), RedeemHistoryActivity.class);
+                i.putExtra("user", mUser);
+                startActivity(i);
+            }
+        });
+
+        mLocationBtn = findViewById(R.id.profile_btn_location_history);
+        mLocationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), LocationHistoryActivity.class);
                 i.putExtra("user", mUser);
                 startActivity(i);
             }

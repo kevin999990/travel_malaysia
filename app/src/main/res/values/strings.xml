@@ -49,5 +49,6 @@
 
     <string name="redeem_history">Redeem History</string>
     <string name="location_history">Location History</string>
+    <string name="getting_value">Getting Value from Server...</string>
 
 </resources>
